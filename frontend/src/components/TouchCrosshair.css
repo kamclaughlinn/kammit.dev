@@ -1,0 +1,38 @@
+.touch-crosshair {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 99999;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect x='11' y='2' width='2' height='20' fill='%23ff0000'/%3E%3Crect x='2' y='11' width='20' height='2' fill='%23ff0000'/%3E%3Crect x='10' y='10' width='4' height='4' fill='%23ff0000'/%3E%3Crect x='11' y='0' width='2' height='2' fill='%23cc0000'/%3E%3Crect x='11' y='22' width='2' height='2' fill='%23cc0000'/%3E%3Crect x='0' y='11' width='2' height='2' fill='%23cc0000'/%3E%3Crect x='22' y='11' width='2' height='2' fill='%23cc0000'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  transition: opacity 0.15s ease;
+}
+
+.touch-crosshair.is-active {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect x='11' y='1' width='2' height='22' fill='%23ff3333'/%3E%3Crect x='1' y='11' width='22' height='2' fill='%23ff3333'/%3E%3Crect x='9' y='9' width='6' height='6' fill='%23ff0000'/%3E%3Crect x='10' y='10' width='4' height='4' fill='%23ffffff'/%3E%3Crect x='11' y='11' width='2' height='2' fill='%23ff0000'/%3E%3C/svg%3E");
+}
+
+.touch-crosshair.is-fading {
+  animation: touch-crosshair-fade 0.45s ease-out forwards;
+}
+
+@keyframes touch-crosshair-fade {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+@media (pointer: fine) and (hover: hover) {
+  .touch-crosshair {
+    display: none;
+  }
+}

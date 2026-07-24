@@ -6,11 +6,13 @@ import ElvisDigipet from './components/ElvisDigipet';
 import ElvisChat from './components/ElvisChat';
 import Contact from './components/Contact';
 import Nav from './components/Nav';
+import TouchCrosshair from './components/TouchCrosshair';
 import './App.css';
 
 export default function App() {
   return (
     <>
+      <TouchCrosshair />
       <Nav />
       <main>
         <Hero />
