@@ -40,6 +40,61 @@
   font-size: 1rem;
 }
 
+.kamban-admin-bar {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.kamban-admin-toggle {
+  border: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  opacity: 0.6;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.kamban-admin-toggle:hover {
+  opacity: 1;
+  color: var(--ink);
+}
+
+.kamban-admin-unlock {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.kamban-admin-unlock input {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  padding: 0.35rem 0.6rem;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: #fffef8;
+}
+
+.kamban-admin-unlock button {
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.kamban-admin-msg,
+.kamban-view-only {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
 .kamban-main {
   position: relative;
   z-index: 1;

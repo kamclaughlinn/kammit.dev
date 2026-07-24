@@ -9,8 +9,13 @@
   cursor: grab;
 }
 
-.sticky-card:active {
-  cursor: grabbing;
+.sticky-card.is-locked {
+  cursor: default;
+}
+
+.sticky-card.is-locked:hover {
+  animation: none;
+  transform: rotate(var(--sticky-tilt, -1deg));
 }
 
 .sticky-card:hover {
