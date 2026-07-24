@@ -11,9 +11,6 @@ import dev.kammit.repository.BoardColumnRepository;
 import dev.kammit.repository.BoardRepository;
 import dev.kammit.repository.CardRepository;
 
-/**
- * KambanService
- */
 @Service
 public class KambanService {
     private final BoardRepository boardRepository;
