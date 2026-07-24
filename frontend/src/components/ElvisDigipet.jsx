@@ -117,7 +117,7 @@ export default function ElvisDigipet() {
       <div className="container">
         <h2 className="section-title">Elvis Digipet.exe</h2>
         <p className="section-subtitle">
-          Feed, pet, play &amp; clean my ginger apprentice — teach him phrases too!
+          Feed, pet, play &amp; clean my ginger apprentice. Least you can do while you're here.
         </p>
 
         <div className="elvis-layout">
@@ -194,7 +194,7 @@ export default function ElvisDigipet() {
 
           <PixelWindow title="Teach Elvis.exe" compact className="elvis-teach-window">
             <p className="teach-hint">
-              Leave a short phrase for Elvis to learn. Content is filtered — keep it wholesome!
+              Leave a short phrase for Elvis to learn. Content is filtered.
             </p>
             <form onSubmit={handleTeach} className="teach-form">
               <input

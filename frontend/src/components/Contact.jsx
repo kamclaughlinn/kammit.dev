@@ -3,9 +3,10 @@ import { SunsetScene } from './ui/PixelScene';
 import './Contact.css';
 
 const links = [
-  { label: 'Email', href: 'mailto:hello@kammit.dev', value: 'hello@kammit.dev' },
-  { label: 'GitHub', href: 'https://github.com/', value: 'github.com/you' },
+  { label: 'Email', href: 'mailto:kerryannemclaughlin6@gmail.com', value: 'kerryannemclaughlin6@gmail.com' },
+  { label: 'LeetCode', href: 'https://leetcode.com/u/Robobleep/', value: 'https://leetcode.com/u/Robobleep/' },
   { label: 'LinkedIn', href: 'https://linkedin.com/', value: 'linkedin.com/in/you' },
+  { label: 'Codedex', href: 'https://www.codedex.io/@robobleep', value: 'https://www.codedex.io/@robobleep' },
 ];
 
 export default function Contact() {
@@ -18,7 +19,6 @@ export default function Contact() {
         <PixelWindow title="Contact Me.exe" className="contact-window">
           <p className="contact-text">
             Open to interesting projects and good coffee chats.
-            Elvis says hire his human.
           </p>
           <ul className="contact-terminal">
             {links.map((link) => (
@@ -29,7 +29,7 @@ export default function Contact() {
               </li>
             ))}
           </ul>
-          <p className="contact-ps">P.S. Elvis says hire my human. Mrrrp.</p>
+          <p className="contact-ps">P.S. Elvis says hire my human. Mrrrp~.</p>
         </PixelWindow>
       </div>
     </SunsetScene>

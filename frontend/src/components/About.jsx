@@ -15,13 +15,13 @@ export default function About() {
               I'm a software engineer who lives mostly in the Java ecosystem —
               Spring Boot, microservices, REST APIs, the whole enterprise
               sandwich. I like clean architecture, readable code, and systems
-              that don't wake me up at 3am (a girl can dream).
+              that don't keep me up at night (a girl can dream).
             </p>
             <p>
               When I'm not deep in backend logic, you'll find me dabbling in
               front-end tech, writing SQL that actually performs, or scripting
               little Python helpers. I believe good software should be reliable
-              <em> and</em> a bit fun — much like this website.
+              <em> and</em> a bit fun — much like this website!
             </p>
           </PixelWindow>
 
@@ -29,8 +29,8 @@ export default function About() {
             <ul className="facts-list">
               <li><span className="fact-icon">☕</span> Minimum viable coffee: 2 cups</li>
               <li><span className="fact-icon">🐱</span> Elvis has veto power on deploys</li>
-              <li><span className="fact-icon">🐛</span> Favorite bug: the "impossible" one</li>
-              <li><span className="fact-icon">📚</span> Currently learning: whatever breaks next</li>
+              <li><span className="fact-icon">🐛</span> Favorite game: Elden Ring</li>
+              <li><span className="fact-icon">📚</span> Currently learning: Python</li>
             </ul>
           </PixelWindow>
         </div>

@@ -7,7 +7,7 @@ import './ElvisChat.css';
 
 const STARTER_MESSAGES = [
   { from: 'elvis', text: 'Mrrrp~' },
-  { from: 'system', text: 'Elvis is your apprentice. He only speaks cat. Good luck.' },
+  { from: 'system', text: 'Elvis is my apprentice... Good luck!' },
 ];
 
 export default function ElvisChat() {
@@ -44,7 +44,7 @@ export default function ElvisChat() {
       <div className="container">
         <h2 className="section-title">Elvis Apprentice.exe</h2>
         <p className="section-subtitle">
-          Ask him anything. He'll respond with cat noises. Very helpful.
+          Ask him anything. He is very helpful...
         </p>
 
         <PixelWindow title="Elvis_Apprentice.exe" className="chat-window">
@@ -52,7 +52,7 @@ export default function ElvisChat() {
             <ElvisCat mood="chill" size="small" className="chat-avatar-sprite" />
             <div>
               <strong>Elvis</strong>
-              <span className="chat-status">Apprentice · Online · Unhelpful</span>
+              <span className="chat-status">Apprentice · Chronically Online · Orange</span>
             </div>
           </div>
 
@@ -75,7 +75,7 @@ export default function ElvisChat() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Type a message... (Elvis won't understand anyway)"
+              placeholder="Tell Elvis I say pspspspspsps..."
               disabled={loading}
             />
             <button type="submit" className="btn btn-accent" disabled={loading || !input.trim()}>
