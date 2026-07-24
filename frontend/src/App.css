@@ -1,0 +1,16 @@
+.footer {
+  padding: 1.5rem 0;
+  border-top: 2px solid var(--border);
+  background: var(--window-bg);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  font-family: var(--font-mono);
+}

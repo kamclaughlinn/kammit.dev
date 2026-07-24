@@ -1,0 +1,40 @@
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.25rem;
+}
+
+.about-window p {
+  color: var(--ink-soft);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.about-window p:last-child {
+  margin-bottom: 0;
+}
+
+.facts-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.facts-list li {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fact-icon {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+}

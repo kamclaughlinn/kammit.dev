@@ -1,0 +1,63 @@
+.pixel-window {
+  background: var(--window-bg);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.pixel-window.compact {
+  border-radius: 10px;
+}
+
+.pixel-window-titlebar {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  background: var(--mint);
+  border-bottom: 2px solid var(--border);
+}
+
+.pixel-window-title {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pixel-window.compact .pixel-window-title {
+  font-size: 0.65rem;
+}
+
+.pixel-window-icon {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.pixel-window-controls {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.ctrl-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--window-bg);
+}
+
+.pixel-window-body {
+  padding: 1.25rem;
+}
+
+.pixel-window.compact .pixel-window-body {
+  padding: 0.85rem;
+}

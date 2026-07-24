@@ -1,0 +1,74 @@
+.digital-me-flip {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: inherit;
+  font-family: var(--font-mono);
+}
+
+.digital-me-flip-inner {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  perspective: 700px;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.4, 0.15, 0.2, 1);
+}
+
+.digital-me-photo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: block;
+}
+
+.digital-me-flip.is-flipped .digital-me-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.digital-me-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.digital-me-back {
+  transform: rotateY(180deg);
+}
+
+.digital-me-back-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 0.15rem;
+}
+
+.digital-me-hint {
+  font-size: 0.65rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+
+.digital-me-flip:hover .digital-me-hint {
+  opacity: 1;
+}
+
+.digital-me-flip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 6px;
+}

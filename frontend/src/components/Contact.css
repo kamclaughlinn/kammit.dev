@@ -1,0 +1,46 @@
+.contact-cta {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  color: white;
+  text-shadow: 2px 2px 0 var(--border);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.contact-window {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.contact-text {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.25rem;
+}
+
+.contact-terminal {
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.contact-terminal a {
+  color: var(--ink);
+  transition: color 0.15s;
+}
+
+.contact-terminal a:hover {
+  color: var(--accent);
+}
+
+.contact-ps {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-family: var(--font-mono);
+}

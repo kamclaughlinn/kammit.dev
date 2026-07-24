@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: kammit-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /api/elvis
+    envVars:
+      - key: PORT
+        value: 8080
