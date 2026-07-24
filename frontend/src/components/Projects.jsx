@@ -22,7 +22,7 @@ const projects = [
     tags: ['React', 'Java', 'REST'],
   },
   {
-    title: '(Personal Site (ur looking at it!))',
+    title: 'Personal Site (ur looking at it!)',
     emoji: '🐱',
     desc: 'Look at the clouds! They move, fun?!.',
     tags: ['Java', 'React', 'Fun'],
