@@ -288,7 +288,7 @@ export default function KambanPage() {
           )}
           {adminMsg && <p className="kamban-admin-msg">{adminMsg}</p>}
           {!isAdmin && board && (
-            <p className="kamban-view-only">view only — sticky chaos locked</p>
+            <p className="kamban-view-only">view only — stickies locked</p>
           )}
         </div>
       </header>
