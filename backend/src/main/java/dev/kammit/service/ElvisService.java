@@ -1,7 +1,9 @@
 package dev.kammit.service;
 
 import dev.kammit.model.ElvisState;
+import dev.kammit.model.ElvisStats;
 import dev.kammit.model.Phrase;
+import dev.kammit.repository.ElvisStatsRepository;
 import dev.kammit.repository.PhraseRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,17 @@ public class ElvisService {
     private int energy = 70;
 
     private final PhraseRepository phraseRepository;
+    private final ElvisStatsRepository statsRepository;
     private final ContentFilterService contentFilter;
     private final Random random = new Random();
 
-    public ElvisService(PhraseRepository phraseRepository, ContentFilterService contentFilter) {
+    public ElvisService(
+            PhraseRepository phraseRepository,
+            ElvisStatsRepository statsRepository,
+            ContentFilterService contentFilter
+    ) {
         this.phraseRepository = phraseRepository;
+        this.statsRepository = statsRepository;
         this.contentFilter = contentFilter;
     }
 
@@ -72,7 +80,10 @@ public class ElvisService {
         applyDecay();
         happiness = clamp(happiness + 15);
         energy = clamp(energy + 5);
-        return buildState("Elvis slow-blinks at you with love~ ♥ *prrrrr*");
+        ElvisStats stats = getStats();
+        long totalHearts = stats.incrementHearts();
+        statsRepository.save(stats);
+        return buildState("Elvis slow-blinks at you with love~ ♥ *prrrrr*", totalHearts);
     }
 
     public synchronized TeachResult teachPhrase(String rawPhrase) {
@@ -116,9 +127,17 @@ public class ElvisService {
     }
 
     private ElvisState buildState(String actionMessage) {
+        return buildState(actionMessage, getStats().getTotalHearts());
+    }
+
+    private ElvisState buildState(String actionMessage, long totalHearts) {
         String mood = computeMood();
         String message = actionMessage != null ? actionMessage : randomStatusMessage(mood);
-        return new ElvisState(hunger, happiness, cleanliness, energy, mood, message);
+        return new ElvisState(hunger, happiness, cleanliness, energy, mood, message, totalHearts);
+    }
+
+    private ElvisStats getStats() {
+        return statsRepository.findById(1L).orElseGet(() -> statsRepository.save(ElvisStats.initial()));
     }
 
     private String computeMood() {

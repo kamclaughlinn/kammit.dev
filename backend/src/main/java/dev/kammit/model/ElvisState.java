@@ -6,5 +6,6 @@ public record ElvisState(
         int cleanliness,
         int energy,
         String mood,
-        String message
+        String message,
+        long totalHearts
 ) {}

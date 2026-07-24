@@ -111,12 +111,43 @@
 }
 
 .heart-count {
-  font-size: 0.82rem;
-  color: var(--ink-soft);
   font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--pink);
+  font-weight: 600;
+}
+
+.elvis-heart-garden {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.2rem 0.35rem;
+  margin-top: 0.85rem;
+  padding: 0.65rem 0.75rem;
+  background: rgba(255, 179, 198, 0.15);
+  border: 1.5px dashed var(--pink);
+  border-radius: 8px;
+  max-height: 88px;
+  overflow-y: auto;
+}
+
+.garden-heart {
+  color: var(--pink);
+  font-size: 0.95rem;
+  line-height: 1;
+  animation: none;
+}
+
+.garden-heart-more {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  align-self: center;
+  margin-left: 0.25rem;
 }
 
 .teach-hint {
+  font-family: var(--font-mono);
   font-size: 0.85rem;
   color: var(--ink-soft);
   margin-bottom: 0.85rem;

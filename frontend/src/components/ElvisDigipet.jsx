@@ -24,7 +24,6 @@ export default function ElvisDigipet() {
   const [loading, setLoading] = useState(false);
   const [animating, setAnimating] = useState('');
   const [hearts, setHearts] = useState([]);
-  const [heartCount, setHeartCount] = useState(0);
   const [connecting, setConnecting] = useState(true);
   const [offline, setOffline] = useState(false);
 
@@ -47,6 +46,7 @@ export default function ElvisDigipet() {
       setState((prev) => prev ?? {
         hunger: 50, happiness: 50, cleanliness: 50, energy: 50,
         mood: 'chill', message: 'Elvis is napping... (server waking up?)',
+        totalHearts: 0,
       });
     } finally {
       setConnecting(false);
@@ -82,7 +82,6 @@ export default function ElvisDigipet() {
     if (loading) return;
     const id = Date.now();
     setHearts((prev) => [...prev, id]);
-    setHeartCount((c) => c + 1);
     setTimeout(() => setHearts((prev) => prev.filter((h) => h !== id)), 900);
 
     setLoading(true);
@@ -123,6 +122,8 @@ export default function ElvisDigipet() {
   }
 
   const mood = state?.mood || 'chill';
+  const totalHearts = state?.totalHearts ?? 0;
+  const displayedHearts = Math.min(totalHearts, 48);
 
   return (
     <MountainScene className="elvis-section section-zone" id="elvis">
@@ -218,10 +219,21 @@ export default function ElvisDigipet() {
                 <PixelSprite sprite={heartSprite} className="heart-icon" title="" />
                 Love
               </button>
-              {heartCount > 0 && (
-                <span className="heart-count">{heartCount} ♥ given</span>
+              {totalHearts > 0 && (
+                <span className="heart-count">{totalHearts} ♥ given by visitors</span>
               )}
             </div>
+
+            {totalHearts > 0 && (
+              <div className="elvis-heart-garden" aria-label={`${totalHearts} hearts given to Elvis`}>
+                {Array.from({ length: displayedHearts }, (_, i) => (
+                  <span key={i} className="garden-heart" aria-hidden="true">♥</span>
+                ))}
+                {totalHearts > displayedHearts && (
+                  <span className="garden-heart-more">+{totalHearts - displayedHearts} more</span>
+                )}
+              </div>
+            )}
           </PixelWindow>
 
           <PixelWindow title="Teach Elvis.exe" compact className="elvis-teach-window">

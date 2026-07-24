@@ -5,7 +5,7 @@ import './Contact.css';
 const links = [
   { label: 'Email', href: 'mailto:kerryannemclaughlin6@gmail.com', value: 'kerryannemclaughlin6@gmail.com' },
   { label: 'LeetCode', href: 'https://leetcode.com/u/Robobleep/', value: 'https://leetcode.com/u/Robobleep/' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/', value: 'linkedin.com/in/you' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/', value: 'cba getting that rn' },
   { label: 'Codedex', href: 'https://www.codedex.io/@robobleep', value: 'https://www.codedex.io/@robobleep' },
 ];
 
