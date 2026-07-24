@@ -7,7 +7,7 @@ export default function Hero() {
   return (
     <SkyScene className="hero section-zone">
       <div className="container">
-        <PixelWindow title="Kerry Anne's Portfolio.exe" className="hero-window">
+        <PixelWindow title="KAMMIT.DEV" className="hero-window">
           <div className="hero-inner">
             <div className="hero-left">
               <PixelWindow title="Digital Me" compact className="digital-me-window">
