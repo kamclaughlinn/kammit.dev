@@ -8,6 +8,7 @@ import { getHeartSprite } from '../sprites/pixelHeart';
 import './ElvisDigipet.css';
 
 const heartSprite = getHeartSprite();
+const ADMIN_KEY_STORAGE = 'elvis-admin-key';
 
 const STAT_CONFIG = [
   { key: 'hunger', label: 'Hunger', invert: true },
@@ -20,12 +21,19 @@ export default function ElvisDigipet() {
   const [state, setState] = useState(null);
   const [phrases, setPhrases] = useState([]);
   const [newPhrase, setNewPhrase] = useState('');
+  const [authorName, setAuthorName] = useState('');
   const [teachMsg, setTeachMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [animating, setAnimating] = useState('');
   const [hearts, setHearts] = useState([]);
   const [connecting, setConnecting] = useState(true);
   const [offline, setOffline] = useState(false);
+  const [adminKey, setAdminKey] = useState(() => sessionStorage.getItem(ADMIN_KEY_STORAGE) || '');
+  const [adminDraft, setAdminDraft] = useState('');
+  const [showAdminUnlock, setShowAdminUnlock] = useState(false);
+  const [adminMsg, setAdminMsg] = useState('');
+
+  const isAdmin = Boolean(adminKey);
 
   const refresh = useCallback(async ({ silent = false } = {}) => {
     if (!silent) setConnecting(true);
@@ -39,7 +47,7 @@ export default function ElvisDigipet() {
           ? { ...elvisState, message: prev.message }
           : elvisState
       ));
-      setPhrases(knownPhrases);
+      setPhrases(Array.isArray(knownPhrases) ? knownPhrases : []);
       setOffline(false);
     } catch {
       setOffline(true);
@@ -103,22 +111,56 @@ export default function ElvisDigipet() {
 
   async function handleTeach(e) {
     e.preventDefault();
-    if (!newPhrase.trim()) return;
+    if (!newPhrase.trim() || !authorName.trim()) return;
     setLoading(true);
     setTeachMsg('');
     try {
-      const result = await elvisApi.teach(newPhrase);
+      const result = await elvisApi.teach(newPhrase, authorName);
       setTeachMsg(result.message);
       if (result.success) {
         setNewPhrase('');
         const knownPhrases = await elvisApi.getPhrases();
-        setPhrases(knownPhrases);
+        setPhrases(Array.isArray(knownPhrases) ? knownPhrases : []);
       }
     } catch {
       setTeachMsg('Something went wrong teaching Elvis.');
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleDeletePhrase(id) {
+    if (!adminKey) return;
+    setLoading(true);
+    setAdminMsg('');
+    try {
+      await elvisApi.deletePhrase(id, adminKey);
+      setPhrases((prev) => prev.filter((p) => p.id !== id));
+      setAdminMsg('Phrase yeeted.');
+    } catch {
+      setAdminMsg('Delete failed — wrong key or server nap?');
+      sessionStorage.removeItem(ADMIN_KEY_STORAGE);
+      setAdminKey('');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleAdminUnlock(e) {
+    e.preventDefault();
+    const key = adminDraft.trim();
+    if (!key) return;
+    sessionStorage.setItem(ADMIN_KEY_STORAGE, key);
+    setAdminKey(key);
+    setAdminDraft('');
+    setShowAdminUnlock(false);
+    setAdminMsg('Admin mode on. Delete buttons unlocked.');
+  }
+
+  function handleAdminLock() {
+    sessionStorage.removeItem(ADMIN_KEY_STORAGE);
+    setAdminKey('');
+    setAdminMsg('Admin locked again.');
   }
 
   const mood = state?.mood || 'chill';
@@ -146,16 +188,16 @@ export default function ElvisDigipet() {
               </div>
 
               {connecting && !state && (
-                <p className="elvis-speech-bubble waking">
+                <div className="elvis-speech-bubble waking">
                   Waking Elvis up… free-tier server, can take up to a minute.
-                </p>
+                </div>
               )}
 
               {offline && !connecting && (
                 <div className="elvis-offline-row">
-                  <p className="elvis-speech-bubble offline">
+                  <div className="elvis-speech-bubble offline">
                     Server&apos;s asleep — auto-retrying every 5s, or hit Wake Elvis.
-                  </p>
+                  </div>
                   <button
                     type="button"
                     className="btn btn-accent elvis-retry-btn"
@@ -168,9 +210,9 @@ export default function ElvisDigipet() {
               )}
 
               {!offline && state?.message && (
-                <p className="elvis-speech-bubble" key={state.message}>
+                <div className="elvis-speech-bubble" key={state.message}>
                   {state.message}
-                </p>
+                </div>
               )}
 
               {!offline && !connecting && state && (
@@ -238,9 +280,18 @@ export default function ElvisDigipet() {
 
           <PixelWindow title="Teach Elvis.exe" compact className="elvis-teach-window">
             <p className="teach-hint">
-              Leave a short phrase for Elvis to learn. Content is filtered.
+              Leave a short phrase for Elvis to learn. Sign it so we know who taught him.
             </p>
             <form onSubmit={handleTeach} className="teach-form">
+              <input
+                type="text"
+                value={authorName}
+                onChange={(e) => setAuthorName(e.target.value)}
+                placeholder="your name"
+                maxLength={40}
+                disabled={loading}
+                aria-label="Your name"
+              />
               <input
                 type="text"
                 value={newPhrase}
@@ -248,8 +299,13 @@ export default function ElvisDigipet() {
                 placeholder="e.g. treats are life"
                 maxLength={120}
                 disabled={loading}
+                aria-label="Phrase to teach"
               />
-              <button type="submit" className="btn btn-accent" disabled={loading || !newPhrase.trim()}>
+              <button
+                type="submit"
+                className="btn btn-accent"
+                disabled={loading || !newPhrase.trim() || !authorName.trim()}
+              >
                 Teach!
               </button>
             </form>
@@ -260,14 +316,70 @@ export default function ElvisDigipet() {
             )}
 
             <div className="known-phrases">
-              <h4>Elvis's vocabulary ({phrases.length})</h4>
+              <div className="known-phrases-header">
+                <h4>Elvis&apos;s vocabulary ({phrases.length})</h4>
+                {isAdmin ? (
+                  <button type="button" className="admin-toggle" onClick={handleAdminLock}>
+                    lock admin
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="admin-toggle"
+                    onClick={() => setShowAdminUnlock((v) => !v)}
+                  >
+                    admin
+                  </button>
+                )}
+              </div>
+
+              {showAdminUnlock && !isAdmin && (
+                <form className="admin-unlock" onSubmit={handleAdminUnlock}>
+                  <input
+                    type="password"
+                    value={adminDraft}
+                    onChange={(e) => setAdminDraft(e.target.value)}
+                    placeholder="admin key"
+                    autoComplete="off"
+                  />
+                  <button type="submit" className="btn btn-accent">Unlock</button>
+                </form>
+              )}
+
+              {adminMsg && <p className="admin-msg">{adminMsg}</p>}
+
               {phrases.length === 0 ? (
                 <p className="no-phrases">No phrases yet — be the first to teach him!</p>
               ) : (
                 <ul>
-                  {phrases.map((phrase) => (
-                    <li key={phrase}>&gt; "{phrase}"</li>
-                  ))}
+                  {phrases.map((phrase) => {
+                    const text = typeof phrase === 'string' ? phrase : phrase.text;
+                    const author = typeof phrase === 'string'
+                      ? null
+                      : (phrase.authorName || phrase.author_name || null);
+                    const id = typeof phrase === 'string' ? text : phrase.id;
+                    return (
+                      <li key={id}>
+                        <div className="phrase-main">
+                          <span className="phrase-text">&gt; &quot;{text}&quot;</span>
+                          {author ? (
+                            <span className="phrase-author">— {author}</span>
+                          ) : null}
+                        </div>
+                        {isAdmin && typeof phrase !== 'string' && phrase.id != null && (
+                          <button
+                            type="button"
+                            className="phrase-delete"
+                            onClick={() => handleDeletePhrase(phrase.id)}
+                            disabled={loading}
+                            aria-label={`Delete phrase ${text}`}
+                          >
+                            ×
+                          </button>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </div>

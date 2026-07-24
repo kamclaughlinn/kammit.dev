@@ -3,12 +3,14 @@ package dev.kammit.service;
 import dev.kammit.model.ElvisState;
 import dev.kammit.model.ElvisStats;
 import dev.kammit.model.Phrase;
+import dev.kammit.model.PhraseDto;
 import dev.kammit.repository.ElvisStatsRepository;
 import dev.kammit.repository.PhraseRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 @Service
@@ -86,37 +88,66 @@ public class ElvisService {
         return buildState("Elvis slow-blinks at you with love~ ♥ *prrrrr*", totalHearts);
     }
 
-    public synchronized TeachResult teachPhrase(String rawPhrase) {
+    public synchronized TeachResult teachPhrase(String rawPhrase, String rawAuthor) {
         ContentFilterService.FilterResult filter = contentFilter.validate(rawPhrase);
         if (!filter.allowed()) {
             return new TeachResult(false, filter.reason(), null);
+        }
+
+        String author = sanitizeAuthor(rawAuthor);
+        if (author == null) {
+            return new TeachResult(false, "Sign your name so Elvis knows who taught him!", null);
         }
 
         if (phraseRepository.countByTextIgnoreCase(filter.sanitized()) > 0) {
             return new TeachResult(false, "Elvis already knows that one!", null);
         }
 
-        Phrase saved = phraseRepository.save(new Phrase(filter.sanitized()));
+        Phrase saved = phraseRepository.save(new Phrase(filter.sanitized(), author));
         return new TeachResult(true, "Elvis learned: \"" + saved.getText() + "\"!", saved.getText());
     }
 
-    public List<String> getKnownPhrases() {
+    public List<PhraseDto> getKnownPhrases() {
         return phraseRepository.findAll().stream()
-                .map(Phrase::getText)
+                .map(PhraseDto::from)
                 .toList();
     }
 
+    public void deletePhrase(Long id) {
+        if (!phraseRepository.existsById(id)) {
+            throw new NoSuchElementException("Phrase not found: " + id);
+        }
+        phraseRepository.deleteById(id);
+    }
+
     public synchronized String randomPhrase() {
-        List<String> phrases = getKnownPhrases();
-        if (phrases.isEmpty()) {
+        // Speech bubbles use phrase text ONLY — never the author name tag.
+        List<String> texts = phraseRepository.findAll().stream()
+                .map(Phrase::getText)
+                .filter(t -> t != null && !t.isBlank())
+                .toList();
+        if (texts.isEmpty()) {
             return pickDefaultPhrase();
         }
-        return phrases.get(random.nextInt(phrases.size()));
+        return texts.get(random.nextInt(texts.size()));
     }
 
     @Scheduled(fixedRate = 60_000)
     public synchronized void tick() {
         applyDecay();
+    }
+
+    private String sanitizeAuthor(String rawAuthor) {
+        if (rawAuthor == null || rawAuthor.isBlank()) {
+            return null;
+        }
+        String trimmed = rawAuthor.trim().replaceAll("\\s+", " ");
+        if (trimmed.length() < 1 || trimmed.length() > 40) {
+            return null;
+        }
+        // strip angle brackets / control chars so nametags stay cute, not spicy
+        String cleaned = trimmed.replaceAll("[<>\\p{Cntrl}]", "");
+        return cleaned.isBlank() ? null : cleaned;
     }
 
     private void applyDecay() {
