@@ -20,7 +20,7 @@ public class CorsConfig {
                                 "https://kammit.dev",
                                 "https://www.kammit.dev"
                         )
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
                         .allowedHeaders("*");
             }
         };

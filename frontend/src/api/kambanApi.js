@@ -1,22 +1,43 @@
 const API_BASE = import.meta.env.VITE_API_URL
   || (import.meta.env.PROD ? 'https://kammit-api.onrender.com/api' : '/api');
 
-async function request(path, options = {}) {
+const REQUEST_TIMEOUT_MS = 30_000;
+const RETRY_ATTEMPTS = 6;
+const RETRY_DELAY_MS = 5_000;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function request(path, options = {}, attempt = 1) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
   const headers = { ...options.headers };
   if (options.method && options.method !== 'GET') {
     headers['Content-Type'] = 'application/json';
   }
 
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers,
-  });
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      headers,
+      signal: controller.signal,
+    });
+    if (!res.ok) throw new Error(`API error: ${res.status}`);
 
-  if (!res.ok) throw new Error(`API error: ${res.status}`);
-
-  const text = await res.text();
-  if (!text) return null;
-  return JSON.parse(text);
+    const text = await res.text();
+    if (!text) return null;
+    return JSON.parse(text);
+  } catch (err) {
+    if (attempt < RETRY_ATTEMPTS) {
+      await sleep(RETRY_DELAY_MS);
+      return request(path, options, attempt + 1);
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 export const kambanApi = {
