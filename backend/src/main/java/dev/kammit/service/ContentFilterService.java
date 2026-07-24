@@ -20,7 +20,8 @@ public class ContentFilterService {
             "fuck", "shit", "bitch", "asshole", "bastard", "damn", "crap",
             "dick", "piss", "slut", "whore", "cunt", "nigger", "nigga",
             "faggot", "retard", "kill yourself", "kys", "suicide",
-            "porn", "nazi", "hitler", "rape", "pedo", "pedophile"
+            "porn", "nazi", "hitler", "rape", "pedo", "pedophile",
+            "tranny", "fag", "dyke", "incel"
     ));
 
     public FilterResult validate(String input) {
@@ -46,8 +47,9 @@ public class ContentFilterService {
         }
 
         String normalized = normalize(trimmed);
+        String compact = compact(trimmed);
         for (String blocked : BLOCKED) {
-            if (containsBlockedWord(normalized, blocked)) {
+            if (containsBlockedWord(normalized, compact, blocked)) {
                 return FilterResult.rejected("That phrase isn't suitable for Elvis's innocent ears.");
             }
         }
@@ -59,23 +61,54 @@ public class ContentFilterService {
         return FilterResult.approved(trimmed);
     }
 
+    /** Same rules for display names / signatures. */
+    public FilterResult validateName(String input) {
+        if (input == null || input.isBlank()) {
+            return FilterResult.rejected("Sign your name so Elvis knows who taught him!");
+        }
+        String trimmed = input.trim();
+        if (trimmed.length() > 40) {
+            return FilterResult.rejected("Name is too long.");
+        }
+        String normalized = normalize(trimmed);
+        String compact = compact(trimmed);
+        for (String blocked : BLOCKED) {
+            if (containsBlockedWord(normalized, compact, blocked)) {
+                return FilterResult.rejected("That name isn't allowed.");
+            }
+        }
+        return FilterResult.approved(trimmed);
+    }
+
+    /** Keep word boundaries for phrase checks. */
     private String normalize(String text) {
         return text.toLowerCase()
-                .replaceAll("[^a-z0-9\\s]", "")
+                .replaceAll("[^a-z0-9\\s]", " ")
                 .replaceAll("\\s+", " ")
                 .trim();
     }
 
-    private boolean containsBlockedWord(String normalized, String blocked) {
+    /** Strip ALL separators so "n i g g e r" / "n.i.g.g.e.r" still match. */
+    private String compact(String text) {
+        return text.toLowerCase().replaceAll("[^a-z0-9]", "");
+    }
+
+    private boolean containsBlockedWord(String normalized, String compact, String blocked) {
+        String blockedCompact = blocked.replaceAll("[^a-z0-9]", "");
+        if (!blockedCompact.isEmpty() && compact.contains(blockedCompact)) {
+            return true;
+        }
         if (blocked.contains(" ")) {
             return normalized.contains(blocked);
         }
         for (String word : normalized.split("\\s")) {
-            if (word.equals(blocked) || levenshteinClose(word, blocked)) {
+            if (word.isEmpty()) continue;
+            String wordCompact = word.replaceAll("[^a-z0-9]", "");
+            if (wordCompact.equals(blockedCompact) || levenshteinClose(wordCompact, blockedCompact)) {
                 return true;
             }
         }
-        return normalized.contains(blocked);
+        return false;
     }
 
     /** Catch simple leetspeak / obfuscation like f@ck, sh1t */
