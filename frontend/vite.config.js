@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
   // GitHub project site: kamclaughlinn.github.io/kammit.dev/
-  base: mode === 'production' ? '/kammit.dev/' : '/',
+  base: command === 'build' ? '/kammit.dev/' : '/',
   server: {
     port: 5173,
     proxy: {
