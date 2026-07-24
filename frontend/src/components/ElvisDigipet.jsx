@@ -26,8 +26,10 @@ export default function ElvisDigipet() {
   const [hearts, setHearts] = useState([]);
   const [heartCount, setHeartCount] = useState(0);
   const [connecting, setConnecting] = useState(true);
+  const [offline, setOffline] = useState(false);
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) setConnecting(true);
     try {
       const [elvisState, knownPhrases] = await Promise.all([
         elvisApi.getState(),
@@ -35,10 +37,12 @@ export default function ElvisDigipet() {
       ]);
       setState(elvisState);
       setPhrases(knownPhrases);
+      setOffline(false);
     } catch {
-      setState({
+      setOffline(true);
+      setState((prev) => prev ?? {
         hunger: 50, happiness: 50, cleanliness: 50, energy: 50,
-        mood: 'chill', message: 'Elvis is napping... (backend offline?)',
+        mood: 'chill', message: 'Elvis is napping... (server waking up?)',
       });
     } finally {
       setConnecting(false);
@@ -47,9 +51,9 @@ export default function ElvisDigipet() {
 
   useEffect(() => {
     refresh();
-    const interval = setInterval(refresh, 15000);
+    const interval = setInterval(() => refresh({ silent: true }), offline ? 5000 : 15000);
     return () => clearInterval(interval);
-  }, [refresh]);
+  }, [refresh, offline]);
 
   async function doAction(action, anim) {
     if (loading) return;
@@ -134,11 +138,27 @@ export default function ElvisDigipet() {
 
               {connecting && !state && (
                 <p className="elvis-speech-bubble waking">
-                  Waking Elvis up… free-tier server, can take ~30s on first visit.
+                  Waking Elvis up… free-tier server, can take up to a minute.
                 </p>
               )}
 
-              {state?.message && (
+              {offline && !connecting && (
+                <div className="elvis-offline-row">
+                  <p className="elvis-speech-bubble offline">
+                    Server&apos;s asleep — auto-retrying every 5s, or hit Wake Elvis.
+                  </p>
+                  <button
+                    type="button"
+                    className="btn btn-accent elvis-retry-btn"
+                    disabled={connecting}
+                    onClick={() => refresh()}
+                  >
+                    Wake Elvis
+                  </button>
+                </div>
+              )}
+
+              {!offline && state?.message && (
                 <p className="elvis-speech-bubble" key={state.message}>
                   {state.message}
                 </p>

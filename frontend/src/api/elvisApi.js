@@ -1,9 +1,9 @@
 const API_BASE = import.meta.env.VITE_API_URL
   || (import.meta.env.PROD ? 'https://kammit-api.onrender.com/api' : '/api');
 
-const REQUEST_TIMEOUT_MS = 45_000;
-const RETRY_ATTEMPTS = 3;
-const RETRY_DELAY_MS = 3_000;
+const REQUEST_TIMEOUT_MS = 60_000;
+const RETRY_ATTEMPTS = 5;
+const RETRY_DELAY_MS = 4_000;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
