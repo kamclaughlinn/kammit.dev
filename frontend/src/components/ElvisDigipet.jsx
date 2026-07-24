@@ -35,7 +35,11 @@ export default function ElvisDigipet() {
         elvisApi.getState(),
         elvisApi.getPhrases(),
       ]);
-      setState(elvisState);
+      setState((prev) => (
+        silent && prev
+          ? { ...elvisState, message: prev.message }
+          : elvisState
+      ));
       setPhrases(knownPhrases);
       setOffline(false);
     } catch {
@@ -51,7 +55,11 @@ export default function ElvisDigipet() {
 
   useEffect(() => {
     refresh();
-    const interval = setInterval(() => refresh({ silent: true }), offline ? 5000 : 15000);
+  }, [refresh]);
+
+  useEffect(() => {
+    const ms = offline ? 5000 : 30000;
+    const interval = setInterval(() => refresh({ silent: true }), ms);
     return () => clearInterval(interval);
   }, [refresh, offline]);
 
@@ -162,6 +170,10 @@ export default function ElvisDigipet() {
                 <p className="elvis-speech-bubble" key={state.message}>
                   {state.message}
                 </p>
+              )}
+
+              {!offline && !connecting && state && (
+                <p className="elvis-connected-tag">Connected to Elvis HQ</p>
               )}
             </div>
 
