@@ -6,26 +6,26 @@ import './Projects.css';
 const projects = [
   {
     title: 'Personal KAMBan (get it? KANBAN? KAM!BAN....okay)',
-    emoji: '🏗️',
+    emoji: '📝',
     desc: 'Basic Sticky-note kanban.',
     tags: ['Java', 'Spring Boot', 'React'],
     to: '/kamban',
   },
   {
     title: '(TODO://ᯓ★🎧ྀི) Playlist Player!',
-    emoji: '🔄',
-    desc: 'Python scripts + SQL stored procedures for ETL workflows and automated reporting.',
+    emoji: '🎵',
+    desc: 'TBC.',
     tags: ['Python', 'SQL', 'PostgreSQL'],
   },
   {
     title: '(TODO://.𖥔 ݁ ˖⋆⭒˚｡⋆) Coffee Shop Dashboard',
-    emoji: '📊',
-    desc: 'React front-end backed by Java APIs.',
+    emoji: '☕',
+    desc: 'TBC.',
     tags: ['React', 'Java', 'REST'],
   },
   {
     title: 'Personal Site (ur looking at it!)',
-    emoji: '🐱',
+    emoji: '🖥️',
     desc: 'Look at the clouds! They move, fun?!.',
     tags: ['Java', 'React', 'PostgreSQL','Cursor API','Fun'],
   },
