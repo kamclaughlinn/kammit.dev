@@ -25,6 +25,7 @@ export default function ElvisDigipet() {
   const [animating, setAnimating] = useState('');
   const [hearts, setHearts] = useState([]);
   const [heartCount, setHeartCount] = useState(0);
+  const [connecting, setConnecting] = useState(true);
 
   const refresh = useCallback(async () => {
     try {
@@ -39,6 +40,8 @@ export default function ElvisDigipet() {
         hunger: 50, happiness: 50, cleanliness: 50, energy: 50,
         mood: 'chill', message: 'Elvis is napping... (backend offline?)',
       });
+    } finally {
+      setConnecting(false);
     }
   }, []);
 
@@ -128,6 +131,12 @@ export default function ElvisDigipet() {
                   <span key={id} className="floating-heart" aria-hidden="true">♥</span>
                 ))}
               </div>
+
+              {connecting && !state && (
+                <p className="elvis-speech-bubble waking">
+                  Waking Elvis up… free-tier server, can take ~30s on first visit.
+                </p>
+              )}
 
               {state?.message && (
                 <p className="elvis-speech-bubble" key={state.message}>
