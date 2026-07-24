@@ -4,7 +4,7 @@ import './Projects.css';
 
 const projects = [
   {
-    title: 'Enterprise API Platform',
+    title: 'Personal KAMBan (get it? KANBAN? KAM!BAN....okay)',
     emoji: '🏗️',
     desc: 'Spring Boot microservices handling high-volume REST traffic with PostgreSQL and Redis caching.',
     tags: ['Java', 'Spring Boot', 'SQL', 'Docker'],
@@ -16,15 +16,15 @@ const projects = [
     tags: ['Python', 'SQL', 'PostgreSQL'],
   },
   {
-    title: 'Internal Admin Dashboard',
+    title: 'Coffee Shop Dashboard',
     emoji: '📊',
-    desc: 'React front-end backed by Java APIs — because someone had to make the ops team happy.',
+    desc: 'React front-end backed by Java APIs.',
     tags: ['React', 'Java', 'REST'],
   },
   {
-    title: 'Elvis Digipet (this site!)',
+    title: '(Personal Site (ur looking at it!))',
     emoji: '🐱',
-    desc: 'A shared virtual cat you can feed, pet, and teach phrases. He runs the show.',
+    desc: 'Look at the clouds! They move, fun?!.',
     tags: ['Java', 'React', 'Fun'],
   },
 ];
