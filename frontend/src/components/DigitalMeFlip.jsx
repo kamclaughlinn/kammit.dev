@@ -18,7 +18,7 @@ export default function DigitalMeFlip() {
       <div className="digital-me-flip-inner">
         <div className="digital-me-face digital-me-front">
           <img
-            src="/digital-me.png"
+            src={`${import.meta.env.BASE_URL}digital-me.png`}
             alt="Kerry Anne"
             className="digital-me-photo"
             draggable={false}

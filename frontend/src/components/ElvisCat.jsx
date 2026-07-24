@@ -1,6 +1,6 @@
 import './ElvisCat.css';
 
-const ELVIS_SRC = '/elvis-cat.png';
+const ELVIS_SRC = `${import.meta.env.BASE_URL}elvis-cat.png`;
 
 export default function ElvisCat({ mood = 'chill', className = '', size = 'large' }) {
   return (
