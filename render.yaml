@@ -6,6 +6,3 @@ services:
     rootDir: backend
     dockerfilePath: ./Dockerfile
     healthCheckPath: /api/elvis
-    envVars:
-      - key: PORT
-        value: 8080

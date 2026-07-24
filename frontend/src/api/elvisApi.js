@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = import.meta.env.VITE_API_URL
+  || (import.meta.env.PROD ? 'https://kammit-api.onrender.com/api' : '/api');
 
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
