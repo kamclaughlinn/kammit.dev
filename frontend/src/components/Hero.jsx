@@ -14,15 +14,15 @@ export default function Hero() {
                 <DigitalMeFlip />
               </PixelWindow>
               <div className="hero-speech">
-                <p>Hi! Welcome to my portfolio!</p>
+                <p>Wsg!</p>
               </div>
             </div>
 
             <div className="hero-right">
-              <p className="hero-greeting">hey, i'm</p>
-              <h1 className="hero-name">Kerry Anne</h1>
+              <p className="hero-greeting">Hiiiii, i'm</p>
+              <h1 className="hero-name">Kerry-Anne</h1>
               <p className="hero-tagline">
-                Software engineer · Java enjoyer · professional cat botherer
+                Software engineer · Java endurer · insufferable cat owner
               </p>
               <p className="hero-blurb">
                 I build backend systems that (mostly) behave, wrangle databases,

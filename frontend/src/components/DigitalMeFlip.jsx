@@ -30,7 +30,7 @@ export default function DigitalMeFlip() {
         </div>
       </div>
       <span className="digital-me-hint" aria-hidden="true">
-        {flipped ? '← flip back' : 'click me →'}
+        {flipped ? '← ....told you' : 'do NOT click me →'}
       </span>
     </button>
   );

@@ -18,19 +18,19 @@ export default function About() {
               that don't keep me up at night (a girl can dream).
             </p>
             <p>
-              When I'm not deep in backend logic, you'll find me dabbling in
-              front-end tech, writing SQL that actually performs, or scripting
-              little Python helpers. I believe good software should be reliable
-              <em> and</em> a bit fun — much like this website!
+              When I'm not deep in backend logic, you'll find me watching random YouTube videos,
+               playing video games, or hanging out with my cat Elvis. I also enjoy learning new programming languages and
+                frameworks, and I'm currently learning Python...or trying to.
             </p>
           </PixelWindow>
 
           <PixelWindow title="Fun Facts.dat" compact className="facts-window">
             <ul className="facts-list">
-              <li><span className="fact-icon">☕</span> Minimum viable coffee: 2 cups</li>
-              <li><span className="fact-icon">🐱</span> Elvis has veto power on deploys</li>
+              <li><span className="fact-icon">🐱</span> Proud owner of Elvis</li>
               <li><span className="fact-icon">🐛</span> Favorite game: Elden Ring</li>
+              <li><span className="fact-icon">☕</span> Favorite coffee: Iced Banana Bread Latte (trust me)</li>
               <li><span className="fact-icon">📚</span> Currently learning: Python</li>
+              <li><span className="fact-icon">🎵</span> Currently Listening to: The Sign - Ace of Base</li>
             </ul>
           </PixelWindow>
         </div>
