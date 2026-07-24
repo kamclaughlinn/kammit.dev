@@ -27,7 +27,7 @@ const projects = [
     title: 'Personal Site (ur looking at it!)',
     emoji: '🖥️',
     desc: 'Look at the clouds! They move, fun?!.',
-    tags: ['Java', 'React', 'PostgreSQL','Cursor API','Fun'],
+    tags: ['Java', 'React', 'PostgreSQL','Cursor AI','Fun'],
   },
 ];
 

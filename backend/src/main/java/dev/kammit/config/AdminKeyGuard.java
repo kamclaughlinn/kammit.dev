@@ -1,7 +1,9 @@
 package dev.kammit.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class AdminKeyGuard {
@@ -21,5 +23,14 @@ public class AdminKeyGuard {
                 && provided != null
                 && !provided.isBlank()
                 && adminKey.equals(provided.trim());
+    }
+
+    public void requireAdmin(String provided) {
+        if (!isConfigured()) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Admin key is not configured");
+        }
+        if (!matches(provided)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Nope.");
+        }
     }
 }
