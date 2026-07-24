@@ -94,7 +94,12 @@ public class ElvisService {
             return new TeachResult(false, filter.reason(), null);
         }
 
-        String author = sanitizeAuthor(rawAuthor);
+        ContentFilterService.FilterResult authorFilter = contentFilter.validateName(rawAuthor);
+        if (!authorFilter.allowed()) {
+            return new TeachResult(false, authorFilter.reason(), null);
+        }
+
+        String author = sanitizeAuthor(authorFilter.sanitized());
         if (author == null) {
             return new TeachResult(false, "Sign your name so Elvis knows who taught him!", null);
         }

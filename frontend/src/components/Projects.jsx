@@ -7,18 +7,18 @@ const projects = [
   {
     title: 'Personal KAMBan (get it? KANBAN? KAM!BAN....okay)',
     emoji: '🏗️',
-    desc: 'Whimsical sticky-note kanban with XP windows, drifting clouds, and Elvis supervision.',
+    desc: 'Basic Sticky-note kanban.',
     tags: ['Java', 'Spring Boot', 'React'],
     to: '/kamban',
   },
   {
-    title: 'Data Pipeline Toolkit',
+    title: '(TODO://ᯓ★🎧ྀི) Playlist Player!',
     emoji: '🔄',
     desc: 'Python scripts + SQL stored procedures for ETL workflows and automated reporting.',
     tags: ['Python', 'SQL', 'PostgreSQL'],
   },
   {
-    title: 'Coffee Shop Dashboard',
+    title: '(TODO://.𖥔 ݁ ˖⋆⭒˚｡⋆) Coffee Shop Dashboard',
     emoji: '📊',
     desc: 'React front-end backed by Java APIs.',
     tags: ['React', 'Java', 'REST'],
@@ -27,7 +27,7 @@ const projects = [
     title: 'Personal Site (ur looking at it!)',
     emoji: '🐱',
     desc: 'Look at the clouds! They move, fun?!.',
-    tags: ['Java', 'React', 'Fun'],
+    tags: ['Java', 'React', 'PostgreSQL','Cursor API','Fun'],
   },
 ];
 
