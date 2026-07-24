@@ -152,21 +152,21 @@ public class ElvisService {
 
     private String randomStatusMessage(String mood) {
         return switch (mood) {
-            case "starving" -> "Elvis gives you the hungry eyes... FEED ME HOOMAN";
-            case "grumpy" -> "Elvis is a bit stinky and displeased";
-            case "sleepy" -> "Elvis yawns... zzz";
+            case "starving" -> "Hungry right now icl.";
+            case "grumpy" -> "I smell.";
+            case "sleepy" -> "zzz";
             case "ecstatic" -> randomPhrase();
             case "content" -> pick(List.of(
                     "Elvis is vibing~", "Elvis slow-blinks at you",
                     "*tail up, happy cat*", randomPhrase()));
-            case "sad" -> "Elvis looks lonely... pet me?";
-            default -> pick(List.of("Elvis is being mysterious", "*stares at wall*", randomPhrase()));
+            case "sad" -> "pet me???";
+            default -> pick(List.of("*contemplates 747s and how cool they are...*", "*stares at wall*", randomPhrase()));
         };
     }
 
     private String pickDefaultPhrase() {
         return pick(List.of(
-                "Meow?", "Mrrrp~", "*exists*", "I am Elvis, destroyer of blinds"
+                "Meow?", "Mrrrp~", "*exists*", "I am Elvis","*hisses*"
         ));
     }
 

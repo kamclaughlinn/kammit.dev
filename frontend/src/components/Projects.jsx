@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import PixelWindow from './ui/PixelWindow';
 import { MountainScene } from './ui/PixelScene';
 import './Projects.css';
@@ -6,8 +7,9 @@ const projects = [
   {
     title: 'Personal KAMBan (get it? KANBAN? KAM!BAN....okay)',
     emoji: '🏗️',
-    desc: 'Spring Boot microservices handling high-volume REST traffic with PostgreSQL and Redis caching.',
-    tags: ['Java', 'Spring Boot', 'SQL', 'Docker'],
+    desc: 'Whimsical sticky-note kanban with XP windows, drifting clouds, and Elvis supervision.',
+    tags: ['Java', 'Spring Boot', 'React'],
+    to: '/kamban',
   },
   {
     title: 'Data Pipeline Toolkit',
@@ -22,7 +24,7 @@ const projects = [
     tags: ['React', 'Java', 'REST'],
   },
   {
-    title: '(Personal Site (ur looking at it!))',
+    title: 'Personal Site (ur looking at it!)',
     emoji: '🐱',
     desc: 'Look at the clouds! They move, fun?!.',
     tags: ['Java', 'React', 'Fun'],
@@ -37,13 +39,8 @@ export default function Projects() {
         <p className="section-subtitle">Things I've built (Elvis approved)</p>
 
         <div className="projects-grid">
-          {projects.map((project, i) => (
-            <PixelWindow
-              key={project.title}
-              title={`project_${i + 1}.exe`}
-              compact
-              className="project-window"
-            >
+          {projects.map((project, i) => {
+            const inner = (
               <article className="project-card">
                 <span className="project-emoji">{project.emoji}</span>
                 <h3>{project.title}</h3>
@@ -53,9 +50,29 @@ export default function Projects() {
                     <span key={tag} className="project-tag">{tag}</span>
                   ))}
                 </div>
+                {project.to ? (
+                  <span className="project-open">open kamban →</span>
+                ) : null}
               </article>
-            </PixelWindow>
-          ))}
+            );
+
+            return (
+              <PixelWindow
+                key={project.title}
+                title={`project_${i + 1}.exe`}
+                compact
+                className={`project-window ${project.to ? 'project-window-link' : ''}`}
+              >
+                {project.to ? (
+                  <Link to={project.to} className="project-link">
+                    {inner}
+                  </Link>
+                ) : (
+                  inner
+                )}
+              </PixelWindow>
+            );
+          })}
         </div>
       </div>
     </MountainScene>

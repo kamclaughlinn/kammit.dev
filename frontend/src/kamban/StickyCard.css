@@ -1,0 +1,90 @@
+.sticky-card {
+  position: relative;
+  padding: 0.85rem 0.75rem 0.7rem;
+  border: 2px solid var(--border);
+  border-radius: 2px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.08);
+  transform: rotate(var(--sticky-tilt, -1deg));
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  cursor: grab;
+}
+
+.sticky-card:active {
+  cursor: grabbing;
+}
+
+.sticky-card:hover {
+  transform: rotate(0deg) translateY(-2px) scale(1.02);
+  animation: sticky-wobble 0.45s ease;
+  z-index: 2;
+}
+
+.sticky-card.is-landing {
+  animation: sticky-plop 0.35s ease;
+}
+
+.sticky-cream { background: #fff8e7; --sticky-tilt: -1.2deg; }
+.sticky-yellow { background: #ffe566; --sticky-tilt: 1deg; }
+.sticky-pink { background: #ffc2d4; --sticky-tilt: -0.6deg; }
+.sticky-mint { background: #d7f3ef; --sticky-tilt: 1.4deg; }
+
+.sticky-tape {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 42px;
+  height: 14px;
+  transform: translateX(-50%) rotate(-2deg);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.sticky-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
+  padding-right: 1.2rem;
+  color: var(--ink);
+}
+
+.sticky-desc {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  line-height: 1.35;
+}
+
+.sticky-delete {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.3rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  opacity: 0.55;
+}
+
+.sticky-delete:hover {
+  opacity: 1;
+  color: #c23a1a;
+}
+
+@keyframes sticky-wobble {
+  0% { transform: rotate(-2deg) translateY(0); }
+  40% { transform: rotate(2deg) translateY(-3px); }
+  100% { transform: rotate(0deg) translateY(-2px) scale(1.02); }
+}
+
+@keyframes sticky-plop {
+  0% { transform: scale(1.08) rotate(2deg); }
+  60% { transform: scale(0.96) rotate(-1deg); }
+  100% { transform: scale(1) rotate(var(--sticky-tilt, 0deg)); }
+}
