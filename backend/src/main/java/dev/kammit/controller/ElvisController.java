@@ -80,6 +80,19 @@ public class ElvisController {
         ));
     }
 
+    @PostMapping("/elvis/admin/verify")
+    public ResponseEntity<Map<String, Boolean>> verifyAdmin(
+            @RequestHeader(value = "X-Admin-Key", required = false) String adminKey
+    ) {
+        if (!adminKeyGuard.isConfigured()) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Admin delete is not configured");
+        }
+        if (!adminKeyGuard.matches(adminKey)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Nope.");
+        }
+        return ResponseEntity.ok(Map.of("ok", true));
+    }
+
     @DeleteMapping("/elvis/phrases/{id}")
     public ResponseEntity<Void> deletePhrase(
             @PathVariable Long id,

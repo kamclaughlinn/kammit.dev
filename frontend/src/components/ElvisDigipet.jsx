@@ -28,7 +28,7 @@ export default function ElvisDigipet() {
   const [hearts, setHearts] = useState([]);
   const [connecting, setConnecting] = useState(true);
   const [offline, setOffline] = useState(false);
-  const [adminKey, setAdminKey] = useState(() => sessionStorage.getItem(ADMIN_KEY_STORAGE) || '');
+  const [adminKey, setAdminKey] = useState('');
   const [adminDraft, setAdminDraft] = useState('');
   const [showAdminUnlock, setShowAdminUnlock] = useState(false);
   const [adminMsg, setAdminMsg] = useState('');
@@ -64,6 +64,27 @@ export default function ElvisDigipet() {
   useEffect(() => {
     refresh();
   }, [refresh]);
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem(ADMIN_KEY_STORAGE);
+    if (!stored) return undefined;
+    let cancelled = false;
+    (async () => {
+      try {
+        await elvisApi.verifyAdmin(stored);
+        if (!cancelled) setAdminKey(stored);
+      } catch {
+        sessionStorage.removeItem(ADMIN_KEY_STORAGE);
+        if (!cancelled) {
+          setAdminKey('');
+          setAdminMsg('Admin session expired — unlock again.');
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const ms = offline ? 5000 : 30000;
@@ -146,15 +167,31 @@ export default function ElvisDigipet() {
     }
   }
 
-  function handleAdminUnlock(e) {
+  async function handleAdminUnlock(e) {
     e.preventDefault();
     const key = adminDraft.trim();
     if (!key) return;
-    sessionStorage.setItem(ADMIN_KEY_STORAGE, key);
-    setAdminKey(key);
-    setAdminDraft('');
-    setShowAdminUnlock(false);
-    setAdminMsg('Admin mode on. Delete buttons unlocked.');
+    setAdminMsg('');
+    setLoading(true);
+    try {
+      await elvisApi.verifyAdmin(key);
+      sessionStorage.setItem(ADMIN_KEY_STORAGE, key);
+      setAdminKey(key);
+      setAdminDraft('');
+      setShowAdminUnlock(false);
+      setAdminMsg('Admin mode on. Delete buttons unlocked.');
+    } catch (err) {
+      sessionStorage.removeItem(ADMIN_KEY_STORAGE);
+      setAdminKey('');
+      const status = err?.status;
+      if (status === 503) {
+        setAdminMsg('Admin key not set on server (ELVIS_ADMIN_KEY).');
+      } else {
+        setAdminMsg('Wrong key. Nice try.');
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   function handleAdminLock() {

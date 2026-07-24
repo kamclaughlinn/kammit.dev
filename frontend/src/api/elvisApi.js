@@ -63,6 +63,10 @@ export const elvisApi = {
     method: 'DELETE',
     headers: { 'X-Admin-Key': adminKey },
   }),
+  verifyAdmin: (adminKey) => request('/elvis/admin/verify', {
+    method: 'POST',
+    headers: { 'X-Admin-Key': adminKey },
+  }),
   chat: (message) => request('/elvis/chat', {
     method: 'POST',
     body: JSON.stringify({ message }),
