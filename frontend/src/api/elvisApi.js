@@ -24,10 +24,20 @@ async function request(path, options = {}, attempt = 1) {
       headers,
       signal: controller.signal,
     });
-    if (!res.ok) throw new Error(`API error: ${res.status}`);
-    return res.json();
+    if (!res.ok) {
+      const err = new Error(`API error: ${res.status}`);
+      err.status = res.status;
+      throw err;
+    }
+
+    if (res.status === 204) return null;
+    const text = await res.text();
+    if (!text) return null;
+    return JSON.parse(text);
   } catch (err) {
-    if (attempt < RETRY_ATTEMPTS) {
+    const status = err?.status;
+    const shouldRetry = (!status || status >= 500) && attempt < RETRY_ATTEMPTS;
+    if (shouldRetry) {
       await sleep(RETRY_DELAY_MS);
       return request(path, options, attempt + 1);
     }
@@ -45,9 +55,13 @@ export const elvisApi = {
   clean: () => request('/elvis/clean', { method: 'POST' }),
   heart: () => request('/elvis/heart', { method: 'POST' }),
   getPhrases: () => request('/elvis/phrases'),
-  teach: (phrase) => request('/elvis/teach', {
+  teach: (phrase, authorName) => request('/elvis/teach', {
     method: 'POST',
-    body: JSON.stringify({ phrase }),
+    body: JSON.stringify({ phrase, authorName }),
+  }),
+  deletePhrase: (id, adminKey) => request(`/elvis/phrases/${id}`, {
+    method: 'DELETE',
+    headers: { 'X-Admin-Key': adminKey },
   }),
   chat: (message) => request('/elvis/chat', {
     method: 'POST',

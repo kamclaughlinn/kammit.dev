@@ -43,15 +43,44 @@
 }
 
 .elvis-speech-bubble {
-  background: var(--cream);
+  position: relative;
+  background: #fff;
   border: 2px solid var(--border);
-  border-radius: 8px;
-  padding: 0.6rem 0.85rem;
+  border-radius: 14px;
+  padding: 0.65rem 0.95rem;
   font-size: 0.88rem;
   max-width: 300px;
-  margin: 0 auto;
+  margin: 0.35rem auto 0.75rem;
   animation: pop 0.35s ease;
   font-family: var(--font-mono);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.08);
+  line-height: 1.35;
+}
+
+.elvis-speech-bubble::before,
+.elvis-speech-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+}
+
+/* border triangle (tail outline) */
+.elvis-speech-bubble::before {
+  top: -10px;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 10px solid var(--border);
+}
+
+/* fill triangle */
+.elvis-speech-bubble::after {
+  top: -7px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 8px solid #fff;
 }
 
 .elvis-stage.eating .elvis-pixel-cat { animation: wiggle 0.4s ease; }
@@ -154,13 +183,14 @@
 }
 
 .teach-form {
-  display: flex;
+  display: grid;
+  grid-template-columns: 0.8fr 1.4fr auto;
   gap: 0.5rem;
   margin-bottom: 0.65rem;
 }
 
 .teach-form input {
-  flex: 1;
+  width: 100%;
   font-family: var(--font-mono);
   font-size: 0.88rem;
   padding: 0.55rem 0.85rem;
@@ -192,13 +222,61 @@
   color: #9d0208;
 }
 
+.known-phrases-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
 .known-phrases h4 {
   font-size: 0.82rem;
-  margin-bottom: 0.6rem;
+  margin: 0;
   color: var(--ink-soft);
   font-family: var(--font-display);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.admin-toggle {
+  border: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+  opacity: 0.55;
+  padding: 0.15rem 0.25rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.admin-toggle:hover {
+  opacity: 1;
+  color: var(--ink);
+}
+
+.admin-unlock {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+}
+
+.admin-unlock input {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  padding: 0.4rem 0.65rem;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: var(--cream);
+}
+
+.admin-msg {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.5rem;
 }
 
 .no-phrases {
@@ -217,13 +295,52 @@
 }
 
 .known-phrases li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
   font-size: 0.82rem;
   font-family: var(--font-mono);
   background: var(--cream);
-  padding: 0.35rem 0.6rem;
+  padding: 0.45rem 0.6rem;
   border: 1.5px solid var(--border);
   border-radius: 4px;
   color: var(--ink-soft);
+}
+
+.phrase-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.phrase-text {
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.phrase-author {
+  font-size: 0.72rem;
+  color: var(--accent);
+}
+
+.phrase-delete {
+  flex-shrink: 0;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  color: #9d0208;
+  font-size: 0.95rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+
+.phrase-delete:hover {
+  background: rgba(255, 143, 171, 0.35);
 }
 
 .elvis-offline-row {
@@ -256,5 +373,9 @@
 
   .stat-row {
     grid-template-columns: 85px 1fr;
+  }
+
+  .teach-form {
+    grid-template-columns: 1fr;
   }
 }
