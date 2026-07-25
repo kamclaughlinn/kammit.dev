@@ -6,6 +6,7 @@ export default defineConfig(({ command }) => ({
   // GitHub project site: kamclaughlinn.github.io/kammit.dev/
   base: command === 'build' ? '/kammit.dev/' : '/',
   server: {
+    host: '127.0.0.1',
     port: 5173,
     proxy: {
       '/api': 'http://localhost:8080',
