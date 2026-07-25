@@ -4,21 +4,8 @@ import { MountainScene } from './ui/PixelScene';
 import './Projects.css';
 
 function openPlaylistPlayer() {
-  let acked = false;
-  const onAck = (event) => {
-    if (event.data?.type === 'KAMMIT_PLAYER_ACK') acked = true;
-  };
-  window.addEventListener('message', onAck);
   window.dispatchEvent(new CustomEvent('kammit:open-player'));
   window.postMessage({ type: 'KAMMIT_OPEN_PLAYER' }, '*');
-  window.setTimeout(() => {
-    window.removeEventListener('message', onAck);
-    if (!acked) {
-      window.alert(
-        'Install the KAMmit Record Player Chrome extension and reload this page — then the vinyl will float here.',
-      );
-    }
-  }, 500);
 }
 
 const projects = [
@@ -33,8 +20,8 @@ const projects = [
   {
     title: 'Playlist Player!',
     emoji: '🎵',
-    desc: 'Floating vinyl on kammit — Spotify Premium record player with Elvis. Install the Chrome extension, then open it here.',
-    tags: ['Chrome Extension', 'Spotify', 'React'],
+    desc: 'Floating vinyl on kammit — Spotify Premium record player with Elvis. No extension needed.',
+    tags: ['Spotify', 'React', 'Web Playback'],
     openPlayer: true,
     openLabel: 'open player →',
   },
