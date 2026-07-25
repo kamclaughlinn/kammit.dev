@@ -1,12 +1,7 @@
-# In-site Spotify record player
+# Playlist player (public embed)
 
-Add these **Redirect URIs** in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) for your app:
+The floating vinyl uses a **Spotify embed** locked to one shrine playlist — no OAuth, no allowlist, no Premium requirement for *your* Spotify app.
 
-- `http://127.0.0.1:5173/spotify-callback`
-- `https://kammit.dev/spotify-callback`
-- `https://www.kammit.dev/spotify-callback`
-- `https://kamclaughlinn.github.io/kammit.dev/spotify-callback`
+Playlist ID: set `VITE_SPOTIFY_PLAYLIST_ID` or edit `embedConfig.js` (default `7zGGindhqtztTRW6H7NKR6`).
 
-Optional: set `VITE_SPOTIFY_CLIENT_ID` in `frontend/.env` (defaults to the shared app Client ID).
-
-Requires **Spotify Premium**. Development-mode apps only allow listed Spotify emails until you request Extended Quota.
+Visitors hit play inside Spotify’s embed. Free Spotify accounts may get previews / prompts; Premium users logged into Spotify in the browser usually get full tracks. That’s Spotify’s embed rules, not kammit’s API quota.

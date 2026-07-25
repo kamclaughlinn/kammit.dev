@@ -168,7 +168,16 @@ export async function spotifyFetch(path, options = {}) {
         // keep raw text
       }
     }
-    const err = new Error(`Spotify API ${res.status}${detail ? `: ${detail}` : ''}`);
+    // Dev-mode apps: non-allowlisted users can log in but every API call is 403
+    if (res.status === 403 && !/premium|playlist|insufficient/i.test(detail || '')) {
+      detail =
+        'Spotify blocked this account — add their Spotify email in Developer Dashboard → Users Management (dev mode allowlist, max 5 users)';
+    }
+    const err = new Error(
+      res.status === 403 && detail?.includes('allowlist')
+        ? detail
+        : `Spotify API ${res.status}${detail ? `: ${detail}` : ''}`,
+    );
     err.status = res.status;
     throw err;
   }
