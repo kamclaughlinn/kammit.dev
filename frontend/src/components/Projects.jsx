@@ -20,8 +20,8 @@ const projects = [
   {
     title: 'Playlist Player!',
     emoji: '🎵',
-    desc: 'Floating vinyl on kammit — Spotify Premium record player with Elvis. No extension needed.',
-    tags: ['Spotify', 'React', 'Web Playback'],
+    desc: 'Floating vinyl shrine — kammit’s playlist via Spotify embed. No login, no extension.',
+    tags: ['Spotify', 'React', 'Embed'],
     openPlayer: true,
     openLabel: 'open player →',
   },

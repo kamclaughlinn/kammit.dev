@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import KambanPage from './kamban/KambanPage';
-import SpotifyCallback from './pages/SpotifyCallback';
 import RecordPlayer from './components/RecordPlayer';
 
 export default function App() {
@@ -10,7 +9,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/kamban" element={<KambanPage />} />
-        <Route path="/spotify-callback" element={<SpotifyCallback />} />
       </Routes>
       <RecordPlayer />
     </>
