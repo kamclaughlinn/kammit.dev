@@ -153,20 +153,32 @@ export async function spotifyFetch(path, options = {}) {
       ...options.headers,
     },
   });
-  if (res.status === 204) return null;
+
+  // Read the body once — calling json() then text() throws "Body is disturbed or locked"
+  const text = res.status === 204 ? '' : await res.text();
+
   if (!res.ok) {
-    let detail = '';
-    try {
-      const body = await res.json();
-      detail = body?.error?.message || body?.error_description || JSON.stringify(body);
-    } catch {
-      detail = await res.text();
+    let detail = text;
+    if (text) {
+      try {
+        const body = JSON.parse(text);
+        detail =
+          body?.error?.message || body?.error_description || JSON.stringify(body);
+      } catch {
+        // keep raw text
+      }
     }
     const err = new Error(`Spotify API ${res.status}${detail ? `: ${detail}` : ''}`);
     err.status = res.status;
     throw err;
   }
-  return res.json();
+
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
 }
 
 export { getSpotifyRedirectUri };

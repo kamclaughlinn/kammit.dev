@@ -301,6 +301,10 @@ export default function RecordPlayer() {
     if (open) window.postMessage({ type: 'KAMMIT_PLAYER_ACK' }, '*');
   }, [open]);
 
+  const closePlayer = useCallback(() => {
+    setOpen(false);
+  }, []);
+
   async function waitForDevice(timeoutMs = 4000) {
     const start = Date.now();
     while (!deviceIdRef.current && Date.now() - start < timeoutMs) {
@@ -535,6 +539,15 @@ export default function RecordPlayer() {
       data-open={open ? 'true' : 'false'}
       data-playing={playing ? 'true' : 'false'}
     >
+      {open ? (
+        <button
+          type="button"
+          className="rp-backdrop"
+          aria-label="Close record player"
+          onClick={closePlayer}
+        />
+      ) : null}
+
       <button
         type="button"
         className="rp-fab"
@@ -563,18 +576,38 @@ export default function RecordPlayer() {
         </span>
       </button>
 
-      <div className="rp-panel" role="dialog" aria-label="KAMmit record player">
+      <div
+        className="rp-panel"
+        role="dialog"
+        aria-modal={open}
+        aria-hidden={!open}
+        aria-label="KAMmit record player"
+        ref={(el) => {
+          if (el) el.inert = !open;
+        }}
+      >
         <header className="rp-bar">
           <span>record_player.exe</span>
-          <button
-            type="button"
-            className="rp-min"
-            title="Minimize to vinyl"
-            aria-label="Minimize"
-            onClick={() => setOpen(false)}
-          >
-            –
-          </button>
+          <div className="rp-bar-actions">
+            <button
+              type="button"
+              className="rp-min"
+              title="Minimize to vinyl"
+              aria-label="Minimize to vinyl"
+              onClick={closePlayer}
+            >
+              –
+            </button>
+            <button
+              type="button"
+              className="rp-close"
+              title="Close"
+              aria-label="Close player"
+              onClick={closePlayer}
+            >
+              ×
+            </button>
+          </div>
         </header>
 
         <div className="rp-body">
