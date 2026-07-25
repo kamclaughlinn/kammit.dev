@@ -9,13 +9,12 @@ import { elvisApi } from '../api/elvisApi';
 import StickyCard from './StickyCard';
 import './KambanPage.css';
 
-const BOARD_KEY = 'kamban-board-id';
 const ADMIN_KEY_STORAGE = 'elvis-admin-key';
 
 const EXE_TITLES = ['todo.exe', 'doing.exe', 'done.exe'];
 
 const ELVIS_LINES = {
-  hello: 'welcome to the shrine',
+  hello: "here's what's cooking on kammit",
   add: 'new quest unlocked',
   move: 'move it already',
   doing: 'get to work',
@@ -57,14 +56,16 @@ export default function KambanPage() {
     setBubbleKey((k) => k + 1);
   }
 
-  async function refreshBoard(id = board?.id) {
-    if (!id) return;
-    const next = await kambanApi.getBoard(id);
+  async function refreshBoard() {
+    const next = await kambanApi.getBoard();
     setBoard(next);
     return next;
   }
 
   useEffect(() => {
+    // Clear old per-browser board ids from the multi-board era
+    localStorage.removeItem('kamban-board-id');
+
     const stored = sessionStorage.getItem(ADMIN_KEY_STORAGE);
     if (!stored) return undefined;
     let cancelled = false;
@@ -92,28 +93,10 @@ export default function KambanPage() {
       setLoading(true);
       setError(null);
       try {
-        const params = new URLSearchParams(window.location.search);
-        const fromUrl = params.get('board');
-        const stored = fromUrl || localStorage.getItem(BOARD_KEY);
-
-        if (stored) {
-          try {
-            const existing = await kambanApi.getBoard(stored);
-            localStorage.setItem(BOARD_KEY, String(existing.id));
-            if (!cancelled) {
-              setBoard(existing);
-              say(ELVIS_LINES.hello);
-            }
-            return;
-          } catch {
-            if (!fromUrl) localStorage.removeItem(BOARD_KEY);
-          }
-        }
-
-        // Creating a board requires admin — visitors just see an empty unlock prompt.
+        const main = await kambanApi.getBoard();
         if (!cancelled) {
-          setError('No board yet. Unlock admin to create KAMban.');
-          say(ELVIS_LINES.locked);
+          setBoard(main);
+          say(ELVIS_LINES.hello);
         }
       } catch (err) {
         if (!cancelled) {
@@ -131,15 +114,6 @@ export default function KambanPage() {
     };
   }, []);
 
-  async function ensureBoard(key = adminKey) {
-    if (board?.id) return board;
-    const created = await kambanApi.createBoard({ name: 'KAMban' }, key);
-    localStorage.setItem(BOARD_KEY, String(created.id));
-    setBoard(created);
-    setError(null);
-    return created;
-  }
-
   async function handleAdminUnlock(e) {
     e.preventDefault();
     const key = adminDraft.trim();
@@ -153,9 +127,6 @@ export default function KambanPage() {
       setShowAdminUnlock(false);
       setAdminMsg('Admin mode on.');
       say(ELVIS_LINES.unlocked);
-      if (!board) {
-        await ensureBoard(key);
-      }
     } catch (err) {
       sessionStorage.removeItem(ADMIN_KEY_STORAGE);
       setAdminKey('');
@@ -258,7 +229,9 @@ export default function KambanPage() {
       <header className="kamban-header container">
         <Link to="/" className="kamban-back">← kammit.dev</Link>
         <h1 className="kamban-brand">KAMban</h1>
-        <p className="kamban-tagline">kanban, but make it kam · rip windows xp</p>
+        <p className="kamban-tagline">
+          one board · what&apos;s next for kammit · rip windows xp
+        </p>
 
         <div className="kamban-admin-bar">
           {isAdmin ? (
@@ -297,7 +270,7 @@ export default function KambanPage() {
         {loading && <p className="kamban-status">booting board…</p>}
         {error && !board && (
           <p className="kamban-status kamban-error">
-            {error}
+            {error} — is the backend awake?
           </p>
         )}
 

@@ -7,7 +7,7 @@ const projects = [
   {
     title: 'Personal KAMBan (get it? KANBAN? KAM!BAN....okay)',
     emoji: '📝',
-    desc: 'Basic Sticky-note kanban.',
+    desc: 'Shared roadmap board — Java/Spring + Postgres POC. View what kammit is shipping next.',
     tags: ['Java', 'Spring Boot', 'React'],
     to: '/kamban',
   },

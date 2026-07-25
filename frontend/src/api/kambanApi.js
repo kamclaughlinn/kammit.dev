@@ -58,11 +58,7 @@ function withAdmin(adminKey, options = {}) {
 }
 
 export const kambanApi = {
-  createBoard: (board, adminKey) => request('/kamban/boards', withAdmin(adminKey, {
-    method: 'POST',
-    body: JSON.stringify(board),
-  })),
-  getBoard: (id) => request(`/kamban/boards/${id}`),
+  getBoard: () => request('/kamban/board'),
   createCard: (columnId, card, adminKey) => request(`/kamban/columns/${columnId}/cards`, withAdmin(adminKey, {
     method: 'POST',
     body: JSON.stringify(card),
