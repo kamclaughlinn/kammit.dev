@@ -20,3 +20,6 @@ Thumbs.db
 # Env
 .env
 .env.local
+
+# Chrome extension local secrets (optional overrides)
+extension/config.local.js

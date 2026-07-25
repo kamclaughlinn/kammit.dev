@@ -27,18 +27,10 @@ public class KambanController {
         this.adminKeyGuard = adminKeyGuard;
     }
 
-    @PostMapping("/boards")
-    public Board createBoard(
-            @RequestBody Board board,
-            @RequestHeader(value = "X-Admin-Key", required = false) String adminKey
-    ) {
-        adminKeyGuard.requireAdmin(adminKey);
-        return kambanService.createBoard(board);
-    }
-
-    @GetMapping("/boards/{id}")
-    public Board getBoard(@PathVariable Long id) {
-        return kambanService.getBoard(id);
+    /** One shared board for everyone — POC roadmap board. */
+    @GetMapping("/board")
+    public Board getMainBoard() {
+        return kambanService.getMainBoard();
     }
 
     @PostMapping("/columns/{id}/cards")
