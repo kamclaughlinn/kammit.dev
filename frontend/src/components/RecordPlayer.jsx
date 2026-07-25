@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
 import ElvisCat from './ElvisCat';
-import { getSpotifyEmbedUrl, SPOTIFY_PLAYLIST_ID } from '../spotify/embedConfig';
+import { getYoutubeEmbedUrl, YOUTUBE_PLAYLIST_ID } from '../spotify/embedConfig';
 import './RecordPlayer.css';
 
 const HEART_SRC = `${import.meta.env.BASE_URL}spotify/pixel-heart.png`;
 const NOTE_SRC = `${import.meta.env.BASE_URL}spotify/pixel-note.png`;
-const EMBED_SRC = getSpotifyEmbedUrl(SPOTIFY_PLAYLIST_ID);
+const EMBED_SRC = getYoutubeEmbedUrl(YOUTUBE_PLAYLIST_ID);
+const EMBED_READY =
+  YOUTUBE_PLAYLIST_ID && !YOUTUBE_PLAYLIST_ID.startsWith('REPLACE_');
 
 export default function RecordPlayer() {
   const [ready, setReady] = useState(false);
   const [open, setOpen] = useState(false);
   const [stageFx, setStageFx] = useState([]);
   const [elvisBeat, setElvisBeat] = useState(false);
-  // Decorative spin while the panel is open (embed handles real audio)
   const listening = open;
 
   const closePlayer = useCallback(() => setOpen(false), []);
@@ -52,7 +53,6 @@ export default function RecordPlayer() {
     if (open) window.postMessage({ type: 'KAMMIT_PLAYER_ACK' }, '*');
   }, [open]);
 
-  // Ambient pixel FX while open
   useEffect(() => {
     if (!open) return undefined;
 
@@ -60,13 +60,13 @@ export default function RecordPlayer() {
       const kind = Math.random() > 0.45 ? 'heart' : 'note';
       const id = `${Date.now()}-${Math.random()}`;
       setStageFx((prev) => [
-        ...prev.slice(-12),
+        ...prev.slice(-10),
         {
           id,
           kind,
-          left: `${18 + Math.random() * 64}%`,
-          bottom: `${36 + Math.random() * 18}%`,
-          drift: `${Math.round((Math.random() - 0.5) * 36)}px`,
+          left: `${12 + Math.random() * 70}%`,
+          bottom: `${20 + Math.random() * 40}%`,
+          drift: `${Math.round((Math.random() - 0.5) * 28)}px`,
         },
       ]);
       setTimeout(() => setStageFx((prev) => prev.filter((f) => f.id !== id)), 1200);
@@ -150,9 +150,28 @@ export default function RecordPlayer() {
         </header>
 
         <div className="rp-body rp-body-embed">
-          <p className="rp-eyebrow">kammit.dev · shrine playlist · no login</p>
+          <div className="rp-embed-wrap">
+            {EMBED_READY ? (
+              <iframe
+                title="KAMmit YouTube playlist"
+                src={EMBED_SRC}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                loading="lazy"
+                allowFullScreen
+              />
+            ) : (
+              <div className="rp-embed-missing">
+                <p>Add your YouTube playlist ID in</p>
+                <code>frontend/src/spotify/embedConfig.js</code>
+                <p className="rp-embed-missing-sub">
+                  From a URL like youtube.com/playlist?list=<strong>PLxxxx</strong>
+                </p>
+              </div>
+            )}
+          </div>
 
-          <section className="rp-stage" aria-label="Record player">
+          <footer className="rp-footer-stage" aria-label="Elvis and vinyl">
             <div className="rp-fx" aria-hidden="true">
               {stageFx.map((f) => (
                 <span
@@ -182,7 +201,6 @@ export default function RecordPlayer() {
                 size="small"
                 className="rp-elvis"
               />
-              <span className="rp-elvis-shadow" aria-hidden="true" />
             </div>
 
             <div className="rp-deck">
@@ -200,21 +218,7 @@ export default function RecordPlayer() {
                 <span className="needle" />
               </div>
             </div>
-          </section>
-
-          <p className="rp-embed-hint">
-            Hit play in the Spotify player — works for anyone, no Connect / allowlist.
-          </p>
-
-          <div className="rp-embed-wrap">
-            <iframe
-              title="KAMmit Spotify playlist"
-              src={EMBED_SRC}
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-              allowFullScreen
-            />
-          </div>
+          </footer>
         </div>
       </div>
     </div>
