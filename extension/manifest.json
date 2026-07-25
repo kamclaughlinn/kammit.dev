@@ -1,0 +1,65 @@
+{
+  "manifest_version": 3,
+  "name": "KAMmit Record Player",
+  "version": "0.3.0",
+  "description": "Floating XP record player for Spotify playlists — on kammit.dev only.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Toggle KAMmit Record Player",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://kammit.dev/*",
+        "https://www.kammit.dev/*",
+        "http://localhost/*",
+        "http://127.0.0.1/*",
+        "https://kamclaughlinn.github.io/*"
+      ],
+      "js": ["content/floating-player.js"],
+      "css": ["content/floating-player.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "popup.html",
+        "popup.css",
+        "popup.js",
+        "lib/*",
+        "vendor/*",
+        "assets/*",
+        "content/floating-shell.css"
+      ],
+      "matches": [
+        "https://kammit.dev/*",
+        "https://www.kammit.dev/*",
+        "http://localhost/*",
+        "http://127.0.0.1/*",
+        "https://kamclaughlinn.github.io/*"
+      ]
+    }
+  ],
+  "permissions": ["storage", "identity", "tabs"],
+  "host_permissions": [
+    "https://accounts.spotify.com/*",
+    "https://api.spotify.com/*",
+    "https://*.spotify.com/*",
+    "wss://*.spotify.com/*",
+    "https://fonts.googleapis.com/*",
+    "https://fonts.gstatic.com/*"
+  ]
+}
