@@ -1,7 +1,7 @@
-# Playlist player (public embed)
+# Playlist player (YouTube embed)
 
-The floating vinyl uses a **Spotify embed** locked to one shrine playlist — no OAuth, no allowlist, no Premium requirement for *your* Spotify app.
+Floating vinyl uses a **YouTube playlist** embed so visitors get full tracks without Spotify login/allowlist.
 
-Playlist ID: set `VITE_SPOTIFY_PLAYLIST_ID` or edit `embedConfig.js` (default `7zGGindhqtztTRW6H7NKR6`).
-
-Visitors hit play inside Spotify’s embed. Free Spotify accounts may get previews / prompts; Premium users logged into Spotify in the browser usually get full tracks. That’s Spotify’s embed rules, not kammit’s API quota.
+1. Create a playlist on [youtube.com](https://www.youtube.com/playlist_create) (not only Music).
+2. Copy the `list=` value, e.g. `PLxxxxxxxx`.
+3. Paste it into `embedConfig.js` as `YOUTUBE_PLAYLIST_ID`, or set `VITE_YOUTUBE_PLAYLIST_ID` in `.env`.

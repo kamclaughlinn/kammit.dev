@@ -20,8 +20,8 @@ const projects = [
   {
     title: 'Playlist Player!',
     emoji: '🎵',
-    desc: 'Floating vinyl shrine — kammit’s playlist via Spotify embed. No login, no extension.',
-    tags: ['Spotify', 'React', 'Embed'],
+    desc: 'Floating vinyl shrine — kammit’s playlist via YouTube embed. No login, full tracks.',
+    tags: ['YouTube', 'React', 'Embed'],
     openPlayer: true,
     openLabel: 'open player →',
   },

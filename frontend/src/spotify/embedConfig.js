@@ -1,11 +1,26 @@
 /**
- * Public shrine playlist — Spotify embed, no login / allowlist needed.
- * Override with VITE_SPOTIFY_PLAYLIST_ID if you swap playlists.
+ * Public shrine playlist — YouTube playlist embed (full play for visitors).
+ *
+ * Paste the list= ID from a youtube.com playlist URL, e.g.
+ *   https://www.youtube.com/playlist?list=PLxxxxxxxx
+ *                                         ^^^^^^^^^^
+ *
+ * Or set VITE_YOUTUBE_PLAYLIST_ID in frontend/.env
+ *
+ * Note: YouTube *Music* links don’t embed — use a normal youtube.com playlist.
  */
-export const SPOTIFY_PLAYLIST_ID =
-  import.meta.env.VITE_SPOTIFY_PLAYLIST_ID || '4bFqUzph32Ujw03m2K2h4U?';
+export const YOUTUBE_PLAYLIST_ID =
+  import.meta.env.VITE_YOUTUBE_PLAYLIST_ID || 'PLWklLPmGhoI8';
 
-export function getSpotifyEmbedUrl(playlistId = SPOTIFY_PLAYLIST_ID) {
+/** @deprecated use YOUTUBE_PLAYLIST_ID */
+export const SPOTIFY_PLAYLIST_ID = YOUTUBE_PLAYLIST_ID;
+
+export function getYoutubeEmbedUrl(playlistId = YOUTUBE_PLAYLIST_ID) {
   const id = encodeURIComponent(playlistId);
-  return `https://open.spotify.com/embed/playlist/${id}?utm_source=generator&theme=0`;
+  return `https://www.youtube-nocookie.com/embed/videoseries?list=${id}&rel=0`;
+}
+
+/** @deprecated use getYoutubeEmbedUrl */
+export function getSpotifyEmbedUrl(playlistId = YOUTUBE_PLAYLIST_ID) {
+  return getYoutubeEmbedUrl(playlistId);
 }
