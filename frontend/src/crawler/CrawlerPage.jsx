@@ -14,18 +14,14 @@ const HACK_LINES = [
   'bypassing the firewall (politely)…',
   'meow.exe is in the pipes…',
   'enumerating hyperlinks…',
-  'almost… don’t look at HR…',
+  'Give me a second, their firewall is- theyre fighting back!',
+  'Get doxxed loser',
 ];
 
 const FAKE_BOOT = [
-  '> boot crawl_kernel.sys',
-  '> mount frontier_queue',
-  '> spin worker pool…',
-  '> resolve DNS (fingers crossed)',
-  '> open sockets… beep boop',
-  '> sniffing a[href]…',
-  '> staying on exact host (no funny business)',
-  '> active++ / active-- ritual engaged',
+  '> staying on exact host (2 lazy)',
+  '> a2 ez',
+  '> get hacked lzr',
 ];
 
 function MatrixRain({ active }) {
