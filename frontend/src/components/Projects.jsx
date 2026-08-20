@@ -3,11 +3,6 @@ import PixelWindow from './ui/PixelWindow';
 import { MountainScene } from './ui/PixelScene';
 import './Projects.css';
 
-function openPlaylistPlayer() {
-  window.dispatchEvent(new CustomEvent('kammit:open-player'));
-  window.postMessage({ type: 'KAMMIT_OPEN_PLAYER' }, '*');
-}
-
 const projects = [
   {
     title: 'Personal KAMBan (get it? KANBAN? KAM!BAN....okay)',
@@ -18,12 +13,12 @@ const projects = [
     openLabel: 'open kamban →',
   },
   {
-    title: 'Playlist Player!',
-    emoji: '🎵',
-    desc: 'Floating vinyl shrine — kammit’s playlist via YouTube embed. No login, full tracks.',
-    tags: ['YouTube', 'React', 'Embed'],
-    openPlayer: true,
-    openLabel: 'open player →',
+    title: 'Web Crawler!',
+    emoji: '🕷️',
+    desc: 'Concurrent BFS crawler from my Monzo take-home — Elvis hacks the mainframe, then he’s in.',
+    tags: ['Java', 'JSoup', 'Concurrency', 'React'],
+    to: '/crawler',
+    openLabel: 'open crawler →',
   },
   {
     title: '(TODO://.𖥔 ݁ ˖⋆⭒˚｡⋆) Coffee Shop Dashboard',
@@ -48,7 +43,7 @@ export default function Projects() {
 
         <div className="projects-grid">
           {projects.map((project, i) => {
-            const interactive = Boolean(project.to || project.openPlayer);
+            const interactive = Boolean(project.to);
             const inner = (
               <article className="project-card">
                 <span className="project-emoji">{project.emoji}</span>
@@ -67,24 +62,13 @@ export default function Projects() {
               </article>
             );
 
-            let body = inner;
-            if (project.to) {
-              body = (
-                <Link to={project.to} className="project-link">
-                  {inner}
-                </Link>
-              );
-            } else if (project.openPlayer) {
-              body = (
-                <button
-                  type="button"
-                  className="project-link project-link-btn"
-                  onClick={openPlaylistPlayer}
-                >
-                  {inner}
-                </button>
-              );
-            }
+            const body = project.to ? (
+              <Link to={project.to} className="project-link">
+                {inner}
+              </Link>
+            ) : (
+              inner
+            );
 
             return (
               <PixelWindow

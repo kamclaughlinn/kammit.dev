@@ -16,12 +16,16 @@ public class CorsConfig {
                 registry.addMapping("/api/**")
                         .allowedOriginPatterns(
                                 "http://localhost:*",
+                                "http://127.0.0.1:*",
                                 "https://*.github.io",
                                 "https://kammit.dev",
                                 "https://www.kammit.dev"
                         )
-                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
-                        .allowedHeaders("*");
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .exposedHeaders("*")
+                        .allowCredentials(false)
+                        .maxAge(3600);
             }
         };
     }
